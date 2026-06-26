@@ -1,3 +1,4 @@
+import * as React from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNwasa, useBook } from "@/lib/nwasa-store";
@@ -160,13 +161,13 @@ function ReaderPage() {
 
   // Render paragraphs with highlight wrapping
   const renderParagraph = (p: string, idx: number) => {
-    let nodes: (string | JSX.Element)[] = [p];
+    let nodes: (string | React.ReactElement)[] = [p];
     highlighted.forEach((h, hi) => {
       nodes = nodes.flatMap((n, ni) => {
         if (typeof n !== "string") return [n];
         const parts = n.split(h);
         if (parts.length === 1) return [n];
-        const out: (string | JSX.Element)[] = [];
+        const out: (string | React.ReactElement)[] = [];
         parts.forEach((part, pi) => {
           out.push(part);
           if (pi < parts.length - 1)
