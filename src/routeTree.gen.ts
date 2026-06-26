@@ -11,8 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ReaderBookIdRouteImport } from './routes/reader.$bookId'
 import { Route as AppReaderRouteImport } from './routes/_app.reader'
 import { Route as AppProfileRouteImport } from './routes/_app.profile'
 import { Route as AppLibraryRouteImport } from './routes/_app.library'
@@ -28,6 +30,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppRoute = AppRouteImport.update({
   id: '/_app',
   getParentRoute: () => rootRouteImport,
@@ -35,6 +42,11 @@ const AppRoute = AppRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReaderBookIdRoute = ReaderBookIdRouteImport.update({
+  id: '/reader/$bookId',
+  path: '/reader/$bookId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppReaderRoute = AppReaderRouteImport.update({
@@ -60,69 +72,83 @@ const AppHomeRoute = AppHomeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
   '/home': typeof AppHomeRoute
   '/library': typeof AppLibraryRoute
   '/profile': typeof AppProfileRoute
   '/reader': typeof AppReaderRoute
+  '/reader/$bookId': typeof ReaderBookIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
   '/home': typeof AppHomeRoute
   '/library': typeof AppLibraryRoute
   '/profile': typeof AppProfileRoute
   '/reader': typeof AppReaderRoute
+  '/reader/$bookId': typeof ReaderBookIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
+  '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/onboarding': typeof OnboardingRoute
   '/_app/home': typeof AppHomeRoute
   '/_app/library': typeof AppLibraryRoute
   '/_app/profile': typeof AppProfileRoute
   '/_app/reader': typeof AppReaderRoute
+  '/reader/$bookId': typeof ReaderBookIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/auth'
     | '/onboarding'
     | '/home'
     | '/library'
     | '/profile'
     | '/reader'
+    | '/reader/$bookId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/auth'
     | '/onboarding'
     | '/home'
     | '/library'
     | '/profile'
     | '/reader'
+    | '/reader/$bookId'
   id:
     | '__root__'
     | '/'
     | '/_app'
+    | '/admin'
     | '/auth'
     | '/onboarding'
     | '/_app/home'
     | '/_app/library'
     | '/_app/profile'
     | '/_app/reader'
+    | '/reader/$bookId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
+  AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
   OnboardingRoute: typeof OnboardingRoute
+  ReaderBookIdRoute: typeof ReaderBookIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -141,6 +167,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app': {
       id: '/_app'
       path: ''
@@ -153,6 +186,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reader/$bookId': {
+      id: '/reader/$bookId'
+      path: '/reader/$bookId'
+      fullPath: '/reader/$bookId'
+      preLoaderRoute: typeof ReaderBookIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app/reader': {
@@ -205,8 +245,10 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
+  AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
   OnboardingRoute: OnboardingRoute,
+  ReaderBookIdRoute: ReaderBookIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
